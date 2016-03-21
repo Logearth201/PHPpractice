@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<url>
+	<loc>http://www.ev-things.com/index.php</loc>
+	<priority>1.0</priority>
+	<changefreq>hourly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/about.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/caution.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/login.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/rule.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/signin.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+<url>
+	<loc>http://www.ev-things.com/FAQ.php</loc>
+	<priority>0.9</priority>
+	<changefreq>monthly</changefreq>
+</url>
+</urlset>
