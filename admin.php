@@ -41,18 +41,6 @@ CREATE TABLE enterprise_review (
 	title text NOT NULL COLLATE utf8_bin,
 	tag_playerset_num int NOT NULL DEFAULT 0,
 	detail text NOT NULL COLLATE utf8_bin,
-	/*
-	detail_2 text NOT NULL COLLATE utf8_bin,
-	detail_3 text NOT NULL COLLATE utf8_bin,
-	detail_4 text NOT NULL COLLATE utf8_bin,
-	detail_5 text NOT NULL COLLATE utf8_bin,
-	detail_6 text NOT NULL COLLATE utf8_bin,
-	detail_7 text NOT NULL COLLATE utf8_bin,
-	detail_8 text NOT NULL COLLATE utf8_bin,
-	detail_9 text NOT NULL COLLATE utf8_bin,
-	last_detail_modify_user int NOT NULL,
-	last_detail_modify_ip text NOT NULL COLLATE utf8_bin,
-	*/
 	detail_omit text NOT NULL COLLATE utf8_bin,
 	information_fromurl text NOT NULL COLLATE utf8_bin,
 	evaluate_score int NOT NULL DEFAULT 50,
@@ -110,24 +98,25 @@ CREATE TABLE enterprise_log_eval_child (
 );
 ALTER TABLE enterprise_log_eval_child ADD INDEX(user_id);
 ALTER TABLE enterprise_log_eval_child ADD FOREIGN KEY (`article_id`) REFERENCES `enterprise_comment`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-CREATE table news(
-	id int AUTO_INCREMENT,
+
+CREATE TABLE news(
+	id int NOT NULL AUTO_INCREMENT,
 	title text NOT NULL COLLATE utf8_bin,
 	user_id int NOT NULL,
 	article_id int NOT NULL,
 	type text NOT NULL COLLATE utf8_bin,
-	already_read tinyint NOT NULL DEFALUT 0,
+	already_read tinyint NOT NULL DEFAULT 0,
 	PRIMARY KEY(id)
 );
 ALTER TABLE news ADD INDEX(`user_id`);
 ALTER TABLE news ADD INDEX(`already_read`);
 
 CREATE TABLE violation_table(
-	id int NOT NULL AUTO INCREMENT,
+	id int NOT NULL AUTO_INCREMENT,
 	type text NOT NULL COLLATE utf8_bin,
 	violation_id int NOT NULL,
 	text text NOT NULL COLLATE utf8_bin,
-	primary key(id)
+	PRIMARY KEY(id)
 );
 
 CREATE TABLE bookmark(

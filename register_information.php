@@ -7,7 +7,7 @@
 	try{
 		if($_SERVER["REQUEST_METHOD"] === "POST"){
 			//POSTのとき：画像認証の値チェック
-			if(isset($_POST["mail"]) && isset($_POST["authenticate_id"]) && isset($_POST["password"]) && isset($_POST["password_confirmation"]) && isset($_POST["captcha_code"])){
+			if(!isset($_POST["mail"]) && !isset($_POST["nickname"]) && !isset($_POST["authenticate_id"]) || !isset($_POST["password"]) || !isset($_POST["password_confirmation"]) || !isset($_POST["captcha_code"])){
 				throw new InputMissException("不正なフォームの確認");
 			}
 			
@@ -19,22 +19,19 @@
 			
 			//authenticate_idのチェック
 			if(!preg_match("/^[0-9]+$/",$_POST["authenticate_id"]) || mb_strlen($_POST["authenticate_id"],"UTF-8") !== 100){
-				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。";
-				exit;
+				throw new InputMissException("IDの偽装送信が確認されました。");
 			}
 			
 			//mailのチェック
 			if($_POST["mail"] === ""){
-				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。";
-				exit;
-			}else if(mb_strlen($_POST["mail"],"UTF-8") >= 50){
-				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。");
+				throw new InputMissException("メールアドレスの偽装送信が確認されました。");
+			}else if(mb_strlen($_POST["mail"],"UTF-8") > 50){
+				throw new InputMissException("メールアドレスの偽装送信が確認されました。");
 			}else if(!is_mail_style($_POST["mail"])){
-				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。";
-				exit;
+				throw new InputMissException("メールアドレスの偽装送信が確認されました。");
 			}
 			
-			$authenticate_id = (int)$_POST["authenticate_id"];
+			$authenticate_id = $_POST["authenticate_id"];
 			$mail = $_POST["mail"];
 			
 			$stmt = $dbh->prepare("SELECT COUNT(*) AS cnt FROM temp_user WHERE authenticate_key = ? AND mail = ? AND date > ?;");
@@ -42,8 +39,7 @@
 			
 			$db = $stmt->fetch(PDO::FETCH_ASSOC);
 			if(!$db || (int)$db["cnt"] !== 1){
-				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。";
-				exit;
+				throw new InputMissException("IDまたはメールアドレスの偽装送信が確認されました。");
 			}
 			
 			//パスワードの長さチェック
@@ -97,6 +93,7 @@
 				throw new InputMissException("ERROR:informationパラメータの不正");
 			}
 			
+			//形式は、id_informationの順番(例：55_55555555....5555)
 			$pieces = explode("_",$_GET["information"]);
 			if(count($pieces) !== 2){
 				throw new InputMissException("ERROR:informationパラメータの不正");
@@ -110,7 +107,7 @@
 			}
 			
 			$dbh = getPDO();
-			$stmt = $dbh->execute("SELECT mail FROM temp_user WHERE authenticate_key = ? AND date = ? AND date > ?;");
+			$stmt = $dbh->prepare("SELECT mail FROM temp_user WHERE authenticate_key = ? AND id = ? AND date > ?;");
 			$stmt->execute(array($authenticate_id,$id,(int)(time()-3600)));
 			$db = $stmt->fetch(PDO::FETCH_ASSOC);
 			if(!$db){
@@ -119,7 +116,7 @@
 			$mail = $db["mail"];
 		}
 	}catch(InputMissException $e){
-		//なにもしない。入力ミスはきちんとエラー表示させる。
+		$e->stackTracePage();
 	}catch(Exception $e){
 		page_fatal_error("register_information.php-128/".$e->getMessage());
 	}

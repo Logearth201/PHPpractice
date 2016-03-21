@@ -3,25 +3,12 @@
 	require_once("module/common.php");
 	require_once("safe/securimage.php");
 	
-	function mailsender($to,$subject,$body,$fromname,$fromaddress){
-		//SMTP送信
-		$mail = new Qdmail();
-		$mail -> smtp(true);
-		$param = array(
-			'host'=>'（SMTPサーバー名',
-			'port'=> 587 ,
-			'from'=>'',
-			'protocol'=>'SMTP_AUTH',
-			'user'=>'（SMTP認証ユーザー名）',
-			'pass' => '（SMTP認証パスワード）',
-		);
-		$mail ->smtpServer($param);
-		$mail ->to($to);
-		$mail ->subject($subject);
-		$mail ->from($fromaddress,$fromname);
-		$mail ->text($body);
-		$return_flag = $mail ->send();
-		return $return_flag;
+	function generate_randnum(){
+		$str = "";
+		for($i=0;$i<=99;$i++){
+			$str .= rand(0,9);
+		}
+		return $str;
 	}
 	
 	$error_message = "";
